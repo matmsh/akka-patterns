@@ -1,14 +1,12 @@
 package akkapatterns
 
-import akka.actor.Actor
-import scala.collection.mutable
-import akka.actor.ActorRef
-import WorkPullingPattern._
-import scala.collection.IterableLike
-import scala.reflect.ClassTag
+import akka.actor.{Actor, ActorRef, Terminated}
+import akkapatterns.WorkPullingPattern._
 import org.slf4j.LoggerFactory
-import akka.actor.Terminated
+
+import scala.collection.mutable
 import scala.concurrent.Future
+import scala.reflect.ClassTag
 
 object WorkPullingPattern {
   sealed trait Message
@@ -60,7 +58,7 @@ class Master[T] extends Actor {
   }
 }
 
-abstract class Worker[T: ClassTag](val master: ActorRef)(implicit manifest: Manifest[T]) extends Actor {
+  abstract class Worker[T: ClassTag](val master: ActorRef) extends Actor {
   implicit val ec = context.dispatcher
 
   override def preStart {

@@ -1,17 +1,31 @@
 *.class
 *.log
-
 # sbt specific
+.cache/
+.history/
+.lib/
+
+# Eclipse specific 
+.project
+.classpath
+
+# Intellj specific
+.idea
+.idea_modules
+.DS_Store
+
+
 dist/*
 target/
 lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
+project/target
+app/
+/tmp/
 
 # Scala-IDE specific
 .scala_dependencies
-.classpath
-.project
-*.swp
-.cache
+.worksheet
+

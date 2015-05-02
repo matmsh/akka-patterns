@@ -2,7 +2,7 @@ package basic
 
 import scala.concurrent.duration._
 import scala.collection.mutable
-import org.scalatest.{ BeforeAndAfter, BeforeAndAfterAll, FunSpec }
+import org.scalatest._
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
 import akka.actor.{ Actor, ActorSystem, Props, DeadLetter }
@@ -16,8 +16,10 @@ import org.mockito.Mockito
 import org.mockito.verification.VerificationMode
 import org.slf4j.LoggerFactory
 
-trait MovioSpec extends FunSpec
-  with ShouldMatchers
+import scala.reflect.ClassTag
+
+trait MovioSpec extends FunSpecLike
+  with Matchers
   with MovioMatchers
   with MockitoSugar
   with MockitoWrapper
@@ -72,8 +74,8 @@ abstract class AkkaSpec extends TestKit(ActorSystem("AkkaTestSystem"))
 }
 
 trait MovioMatchers {
-  def anInstanceOf[T](implicit manifest: Manifest[T]) = {
-    val clazz = manifest.runtimeClass.asInstanceOf[Class[T]]
+  def anInstanceOf[T](implicit ct: ClassTag[T]) = {
+    val clazz = ct.runtimeClass.asInstanceOf[Class[T]]
     new BePropertyMatcher[AnyRef] {
       def apply(left: AnyRef) =
         BePropertyMatchResult(left.getClass.isAssignableFrom(clazz), "an instance of " + clazz.getName)
